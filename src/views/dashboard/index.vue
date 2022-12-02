@@ -1,11 +1,9 @@
 <template>
   <div>
-    首页
+    <TopNav/>
   </div>
     
 </template>
-<script>
-export default {
-  name: 'Dashboard'
-}
+<script setup>
+import TopNav from '@/components/TopNav'
 </script>

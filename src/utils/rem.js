@@ -1,4 +1,4 @@
-const baseSize = 32 //750px视口 1rem = 32px
+const baseSize = 100 //750px视口 1rem = 100px
 function setRem(){
     // 获取视口宽度
     let deviceWidth = document.documentElement.clientWidth || window.innerWidth
@@ -6,9 +6,9 @@ function setRem(){
     const scale = deviceWidth / 750
     document.documentElement.style.fontSize = (baseSize * Math.min(scale,1) + 'px')
 
-    // 设置字体大小 通常是 16px 和 24px 现在是16
+    // 设置字体大小 通常是 16px 和 24px 现在是15
     // 未考虑iphone12 安全区 （待调整）
-    document.querySelector('body').style.fontSize = 1 + 'rem'
+    document.querySelector('body').style.fontSize = 0.3 + 'rem'
 }
 // 初始化
 setRem()
