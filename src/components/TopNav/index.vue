@@ -28,8 +28,8 @@
 <style lang="less" scoped>
 .top-nav {
     display: flex;
-    height: 0.5rem;
-    padding: .1rem;
+    height: 0.6rem;
+    padding: .2rem;
     justify-content: space-between;
     align-items: center;
 

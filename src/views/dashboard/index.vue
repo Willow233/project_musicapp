@@ -43,33 +43,43 @@
       </div>
     </div>
     </div>
+    <!-- 推荐歌单 -->
+    <ImageCard :list="topPlayList"/>
+
     
   </div>
 </template>
 
 <script>
 import TopNav from '@/components/TopNav'
-import { getBanner } from '@/api/dashboard';
+import ImageCard from './components/ImageCard.vue';
+import { getBanner,getMusicList } from '@/api/dashboard';
 import { reactive, onMounted } from 'vue';
-// import axios from 'axios';
 
 export default {
   components: {
-    TopNav
+    TopNav,
+    ImageCard
   },
   setup() {
     const state = reactive({
-      images: []
+      images: [],
+      topPlayList:{}
     })
 
 
     onMounted(() => {
       getSwiperBanner()
+      getMusicCardList()
     });
 
     async function getSwiperBanner() {
       const res = await getBanner()
       state.images = res.data.banners
+    }
+
+    async function getMusicCardList(){
+      const res = await getMusicList()
       console.log(res);
     }
 
@@ -89,7 +99,7 @@ export default {
     width: 100%
   }
 
-  /deep/ .van-swipe__indicator--active {
+  :deep(.van-swipe__indicator--active)  {
     background-color: red;
   }
 }

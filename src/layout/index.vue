@@ -1,11 +1,5 @@
 <template>
   <div class="app-wrapper">
-    <!-- v-if="true" @click="handleClickOutside" -->
-    <!-- <div class="drawer-bg">
-      <svg class="icon" aria-hidden="true">
-        <use xlink:href="#icon-menu"></use>
-      </svg>
-    </div> -->
     <div v-if="false" class="sidebar-container">
       <Sidebar />
     </div>
@@ -40,7 +34,7 @@ export default {
 .app-wrapper {
   position: relative;
   height: 100%;
-  width: 100%;
+  // width: 100%;
   padding: 0;
 }
 
