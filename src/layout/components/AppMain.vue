@@ -1,5 +1,6 @@
 <template>
   <section class="app-main">
+    <!-- 二级路由 -->
     <router-view v-slot="{ Component }">
       <transition>
         <component :is="Component" />

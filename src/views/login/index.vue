@@ -6,7 +6,7 @@
       </svg>
     </div>
     <div class="login-button">
-      <span>手机号登录</span>
+      <span @click="$router.push('/login/phonecode')">用户名登录</span>
     </div>
     <div class="login-protocol">
       <van-checkbox v-model="checked">我已阅读并同意<a href="javascript:;">《服务条款》</a>、<a href="javascript:;">《隐私政策》</a>、<a href="javascript:;">《中国联通认证服务协议》</a></van-checkbox>
