@@ -53,7 +53,7 @@
 <script>
 import TopNav from '@/components/TopNav'
 import ImageCard from './components/ImageCard.vue';
-import { getBanner,getMusicList } from '@/api/dashboard';
+import { getBanner } from '@/api/dashboard';
 import { reactive, onMounted } from 'vue';
 
 export default {
@@ -70,17 +70,11 @@ export default {
 
     onMounted(() => {
       getSwiperBanner()
-      getMusicCardList()
     });
 
     async function getSwiperBanner() {
       const res = await getBanner()
       state.images = res.data.banners
-    }
-
-    async function getMusicCardList(){
-      const res = await getMusicList()
-      console.log(res);
     }
 
 

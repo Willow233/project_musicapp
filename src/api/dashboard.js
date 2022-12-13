@@ -8,15 +8,10 @@ export function getBanner() {
   }
 
 // 获取推荐歌单
-export function getMusicList() {
+export function getPersonalized() {
   return request({
-    url: '/recommend/resource',
+    url: '/personalized?limit=10',
+    withCredentials: true
   })
 }
 
-// 获取精品歌单
-export function getTopPlayList() {
-  return request({
-    url: '/top/playlist/highquality',
-  })
-}

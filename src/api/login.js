@@ -4,6 +4,7 @@ import request from '@/utils/request'
 export function loginByPhoneCode(phone) {
     return request({
       url: `/captcha/sent?phone=${phone}`,
+      withCredentials: true
     })
   }
 
@@ -12,6 +13,7 @@ export function checkPhoneCode(params) {
   return request({
     url: '/captcha/verify',
     // url: `/captcha/verify?phone=${params.phone}&captcha=${params.captcha}`,
-    params
+    params,
+    withCredentials: true
   })
 }

@@ -24,9 +24,10 @@ export default {
       captcha:''
     });
     const showKeyboard = ref(true);
-    const checkCode = () => {
+    const checkCode = async() => {
       const {phone,captcha} = form
-      checkPhoneCode({phone,captcha})
+      await checkPhoneCode({phone,captcha})
+      router.push('/dashboard')
       showKeyboard.value = false
       
     }
