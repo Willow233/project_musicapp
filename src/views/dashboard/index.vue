@@ -3,8 +3,8 @@
     <!-- 顶部导航 -->
     <TopNav />
     <!-- 轮播图区域 -->
-    <van-swipe :autoplay="3000" lazy-render>
-      <van-swipe-item v-for="image in state.images" :key="image">
+    <van-swipe :autoplay="3000" lazy-render :loop="false">
+      <van-swipe-item v-for="image in state.images" :key="image" @click="test">
         <img :src="image.pic" />
       </van-swipe-item>
     </van-swipe>
@@ -44,7 +44,7 @@
     </div>
     </div>
     <!-- 推荐歌单 -->
-    <ImageCard :list="topPlayList"/>
+    <ImageCard/>
 
     
   </div>
@@ -63,8 +63,7 @@ export default {
   },
   setup() {
     const state = reactive({
-      images: [],
-      topPlayList:{}
+      images: []
     })
 
 
@@ -77,8 +76,11 @@ export default {
       state.images = res.data.banners
     }
 
+    function test(){
+      console.log('111');
+    }
 
-    return { state };
+    return { state,test };
   },
 };
 </script>

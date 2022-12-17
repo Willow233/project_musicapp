@@ -15,3 +15,11 @@ export function getPersonalized() {
   })
 }
 
+// 获取歌单详情
+export function getListDetail(id) {
+  return request({
+    url: `/playlist/detail?id=${id}`
+  })
+}
+
+

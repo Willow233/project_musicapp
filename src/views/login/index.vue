@@ -23,8 +23,9 @@ import { reactive,ref } from 'vue';
 export default {
   name: 'Login',
   setup() {
-    const checked = ref(true);
-    return { checked };
+    const checked = ref(true)
+   
+    return { checked}
   },
 }
 </script>

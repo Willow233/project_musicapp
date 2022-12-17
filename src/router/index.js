@@ -15,16 +15,18 @@ const routes = [
     path:'/login/inputcode',
     component:() => import('@/views/login/components/InputCode')
   },
-  
   {
     path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    children: [{
-      path: '/dashboard',
-      name: '首页',
-      component: () => import('@/views/dashboard/index')
-    }]
+    redirect:'/dashboard',
+    component: () => import('@/views/dashboard/index')
+  },
+  {
+    path: '/dashboard',
+    component: () => import('@/views/dashboard/index')
+  },
+  {
+    path:'/musiclistdetail',
+    component:()=> import('@/views/dashboard/components/MusicListDetail')
   }
 ]
 
