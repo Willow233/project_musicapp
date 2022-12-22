@@ -17,6 +17,7 @@
       </div>
     </div>
     <div class="itemTopContent">
+      <img :src="playlist.coverImgUrl" alt="" class="bgimg" />
       <div class="contentLeft">
         <img :src="playlist.coverImgUrl" alt="" />
         <div class="palyCount">
@@ -29,8 +30,8 @@
       <div class="contentRight">
         <p class="rightP_one">{{ playlist.name }}</p>
         <div class="right_img">
-          <img :src="playlist.creator.backgroundUrl" alt="" />
-          <span>{{ playlist.creator.nickname }}</span>
+          <img :src="creator.backgroundUrl" alt="" />
+          <span>{{creator.nickname }}</span>
           <svg class="icon" aria-hidden="true">
             <use xlink:href="#icon-youjiantou"></use>
           </svg>
@@ -73,10 +74,6 @@
   <script>
   export default {
     setup(props) {
-      // console.log(props);
-      // 通过props进行传值，判断如果数据拿不到，就获取sessionStorage中的
-      props.playlist.creator=""
-      
       // 对播放量的处理
       function changeCount(num) {
         if (num >= 100000000) {
@@ -87,17 +84,19 @@
       }
       return{changeCount}
     },
-    props: ["playlist"],
+    props: ['playlist','creator'],
   };
   </script>
   <style lang="less" scoped>
   .itemMusicTop {
     width: 100%;
+    box-sizing: border-box;
     height: 1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
+    position: fixed;
+    top: 0;
     .itemLeft,
     .itemRight {
       width: 20%;
@@ -115,19 +114,30 @@
         fill: #fff; //填充颜色
       }
     }
+    .itemLeft{
+      position: absolute;
+      left: 0;
+    }
+    .itemRight{
+      position: absolute;
+      right: 0.2rem;
+    }
     .bgimg {
       width: 100%;
-      height: 11rem;
+      height: 1rem;
       position: absolute;
+      object-fit: cover;
       z-index: -1;
       filter: blur(30px);
+      background-color: white;
     }
   }
   .itemTopContent {
     width: 100%;
     height: 3rem;
     padding: 0.2rem;
-    margin-top: 0.4rem;
+    box-sizing: border-box;
+    margin-top: 1.4rem;
     display: flex;
     justify-content: space-between;
     .contentLeft {
@@ -169,6 +179,7 @@
         font-weight: 900;
         color: #fff;
         font-family: "微软雅黑";
+        margin-top: 0;
       }
       .right_img {
         width: 100%;
@@ -215,6 +226,14 @@
         }
       }
     }
+    .bgimg {
+      width: 100%;
+      height: 11rem;
+      position: absolute;
+      top: 0;
+      z-index: -1;
+      filter: blur(30px);
+    }
   }
   .itemTopFooter{
     width: 100%;
@@ -228,9 +247,12 @@
       align-items: center;
       color: #fff;
       .icon{
+        width: 0.45rem;
+          height: 0.45rem;
         fill: #fff;
       }
       span{
+        font-size: .24rem;
         margin-top: .1rem;
       }
     }

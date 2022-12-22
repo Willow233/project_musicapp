@@ -22,4 +22,11 @@ export function getListDetail(id) {
   })
 }
 
+// 获取歌单所有歌曲
+export function getListAll(id) {
+  return request({
+    url: `/playlist/track/all?id=${id}`
+  })
+}
+
 

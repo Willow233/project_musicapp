@@ -4,7 +4,7 @@
     <TopNav />
     <!-- 轮播图区域 -->
     <van-swipe :autoplay="3000" lazy-render :loop="false">
-      <van-swipe-item v-for="image in state.images" :key="image" @click="test">
+      <van-swipe-item v-for="image in state.images" :key="image">
         <img :src="image.pic" />
       </van-swipe-item>
     </van-swipe>
@@ -73,14 +73,10 @@ export default {
 
     async function getSwiperBanner() {
       const res = await getBanner()
-      state.images = res.data.banners
+      state.images = res.banners
     }
 
-    function test(){
-      console.log('111');
-    }
-
-    return { state,test };
+    return { state };
   },
 };
 </script>

@@ -31,20 +31,13 @@ import router from '@/router'
 import { reactive, onMounted } from 'vue'
 
 export default {
-    // props: {
-    //     list: {
-    //         type:Object,
-    //         required:false
-    //     }
-    // },
     setup() {
         const list = reactive({
             arr: []
         })
         const getPersonalList = async () => {
             const res = await getPersonalized()
-            list.arr = res.data.result
-            console.log(list.arr);
+            list.arr = res.result
         }
 
         onMounted(() => {
