@@ -29,4 +29,11 @@ export function getListAll(id) {
   })
 }
 
+// 获取音乐
+export function getMUsicUrl(id) {
+  return request({
+    url: `/song/url?id=${id}`
+  })
+}
+
 

@@ -28,6 +28,7 @@ export default{
             //获取歌单歌曲
             const result = await getListAll(id)
             state.itemList = result.songs
+            console.log(result.songs);
             state.subscribedCount = res.playlist.subscribedCount
             
         };
