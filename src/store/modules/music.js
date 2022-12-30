@@ -1,6 +1,7 @@
 const state = {
     playList: [{
         id: 2009007646,//歌曲id
+        name:'歌曲名',
         al: {
             id:157096025, //专辑id
             name:"年终奖",
