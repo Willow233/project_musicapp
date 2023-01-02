@@ -47,10 +47,12 @@ export default {
         //播放
         function play() {
             audio.value.play()
+            isbtnShow.value = false
         }
         //暂停
         function pause() {
             audio.value.pause()
+            isbtnShow.value = true
         }
 
 
