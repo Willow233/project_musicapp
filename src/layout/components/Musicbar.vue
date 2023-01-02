@@ -2,25 +2,20 @@
     <div class="FooterMusic">
         <div class="footerLeft" @click="updateDetailShow">
             <img :src="playList[playListIndex].al.picUrl" alt="" />
-            <div>
-                <p>{{ playList[playListIndex].name }}</p>
-                <span>横滑切换上下首哦</span>
-            </div>
+            <span>{{ playList[playListIndex].name }}</span>
         </div>
         <div class="footerRight">
             <svg class="icon liebiao" aria-hidden="true" @click="play" v-if="isbtnShow">
                 <use xlink:href="#icon-bofang1"></use>
             </svg>
-            <svg class="icon liebiao" aria-hidden="true" @click="play" v-else>
+            <svg class="icon liebiao" aria-hidden="true" @click="pause" v-else>
                 <use xlink:href="#icon-timeout"></use>
             </svg>
             <svg class="icon liebiao" aria-hidden="true">
                 <use xlink:href="#icon-toggle-right"></use>
             </svg>
         </div>
-        <audio ref="audio"
-        controls 
-            :src="`https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
+        <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
     </div>
 </template>
 
@@ -45,22 +40,24 @@ export default {
         let audio = ref(null)
 
         onMounted(() => {
-        // 此时才能获取到ref对象，因setup执行比mounted早，dom还没生成
+            // 此时才能获取到ref对象，因setup执行比mounted早，dom还没生成
             console.log('audio', audio)
 
         })
-        //播放/暂停
+        //播放
         function play() {
-
             audio.value.play()
-            console.log('play', audio)
+        }
+        //暂停
+        function pause() {
+            audio.value.pause()
         }
 
 
         console.log('playlist', playList)
         return {
             // 要return audio 才能获取获取到audio实例对象 不然就是null
-            playList, playListIndex, isbtnShow, play, audio
+            playList, playListIndex, isbtnShow, play, audio,pause
         }
     }
 }
@@ -83,13 +80,22 @@ export default {
         width: 60%;
         height: 100%;
         display: flex;
-        justify-content: space-around;
+        justify-content: flex-start;
         align-items: center;
 
         img {
-            width: 1rem;
-            height: 1rem;
+            width: 0.8rem;
+            height: 0.8rem;
             border-radius: 50%;
+        }
+
+        span {
+            display: inline-block;
+            width: 4rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-left: .2rem;
         }
     }
 
