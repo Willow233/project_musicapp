@@ -4,8 +4,8 @@
             <span class="title">推荐歌单</span>
             <span class="more">更多&gt;</span>
         </div>
-        <van-swipe :autoplay="3000" indicator-color="white" width="110" 
-        :loop="true"
+        <van-swipe indicator-color="white" width="110" 
+        :loop="false"
         :stop-propagation ="false"
         :show-indicators="false" 
         :touchable="true">

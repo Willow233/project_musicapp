@@ -3,7 +3,7 @@
     <!-- 顶部导航 -->
     <TopNav />
     <!-- 轮播图区域 -->
-    <van-swipe :autoplay="3000" lazy-render :loop="false">
+    <van-swipe :autoplay="3000" lazy-render :loop="true">
       <van-swipe-item v-for="image in state.images" :key="image">
         <img :src="image.pic" />
       </van-swipe-item>

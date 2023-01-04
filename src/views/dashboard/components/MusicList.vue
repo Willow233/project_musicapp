@@ -45,9 +45,8 @@
     props: ['itemList', 'subscribedCount'],
     setup(props) {
      const store = useStore()
-    const playMusic = ()=>{
-        store.dispatch('music/updatePlayList',this.itemList)
-        store.dispatch('music/updatePlayListIndex',{i})
+    const playMusic = (i)=>{
+        store.commit('music/updatePlayListIndex',i)
 
     }
     return {playMusic}

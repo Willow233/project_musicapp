@@ -1,5 +1,7 @@
 <template>
+    
     <div class="FooterMusic">
+        
         <div class="footerLeft" @click="updateDetailShow">
             <img :src="playList[playListIndex].al.picUrl" alt="" />
             <span>{{ playList[playListIndex].name }}</span>
@@ -11,18 +13,25 @@
             <svg class="icon liebiao" aria-hidden="true" @click="pause" v-else>
                 <use xlink:href="#icon-timeout"></use>
             </svg>
-            <svg class="icon liebiao" aria-hidden="true">
+            <svg class="icon liebiao" aria-hidden="true" @click="popup">
                 <use xlink:href="#icon-toggle-right"></use>
             </svg>
         </div>
         <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
     </div>
+    <MusicListPopup :show-bottom="showBottom" @close-popup="closePopup"/>
+   
 </template>
 
 <script>
-import { mapState, useStore } from 'vuex';
-import { computed, ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
+import { computed, ref, onMounted ,watch } from 'vue';
+import MusicListPopup from '@/components/MusicListPopup/index.vue'
+
 export default {
+    components:{
+        MusicListPopup
+    },
     setup() {
         // vuex
         const store = useStore()
@@ -54,12 +63,28 @@ export default {
             audio.value.pause()
             isbtnShow.value = true
         }
-
-
+        // 歌曲变化自动播放
+        watch(
+            playListIndex,
+            ()=>{
+                play()
+            }
+        )
+        // 弹出当前播放列表
+        let showBottom = ref(false)
+        function popup(){
+            showBottom.value = true
+            console.log('弹出',showBottom.value);
+        }
+        // 关闭播放列表
+        function closePopup(){
+            showBottom.value = false
+            console.log('触发父方法');
+        }
         console.log('playlist', playList)
         return {
             // 要return audio 才能获取获取到audio实例对象 不然就是null
-            playList, playListIndex, isbtnShow, play, audio,pause
+            playList, playListIndex, isbtnShow, play, audio,pause,showBottom,popup,closePopup
         }
     }
 }
@@ -70,7 +95,7 @@ export default {
     width: 100%;
     height: 1rem;
     box-sizing: border-box;
-    background-color: #fff;
+    background-color: rgb(255, 255, 255);
     position: fixed;
     bottom: 0;
     border-top: 1px solid #999;
@@ -114,4 +139,6 @@ export default {
         }
     }
 }
+
+
 </style>
