@@ -60,7 +60,7 @@
     width: 100%;
     box-sizing: border-box;
     height: 12.5rem;
-    overflow: scroll;
+    overflow-x: scroll;
     background-color: #fff;
     padding: 0 0.2rem;
     margin-top: 0.2rem;

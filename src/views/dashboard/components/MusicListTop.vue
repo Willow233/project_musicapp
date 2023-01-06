@@ -92,6 +92,7 @@
     width: 100%;
     box-sizing: border-box;
     height: 1rem;
+    
     // display: flex;
     // justify-content: space-between;
     // align-items: center;
@@ -122,6 +123,7 @@
       position: absolute;
       right: 0.2rem;
     }
+
     .bgimg {
       width: 100%;
       height: 1rem;
@@ -129,7 +131,6 @@
       object-fit: cover;
       z-index: -1;
       filter: blur(30px);
-      background-color: white;
     }
   }
   .itemTopContent {
@@ -140,6 +141,8 @@
     margin-top: 1.4rem;
     display: flex;
     justify-content: space-between;
+    position: relative;
+    
     .contentLeft {
       width: 36%;
       height: 2.6rem;
@@ -228,7 +231,8 @@
     }
     .bgimg {
       width: 100%;
-      height: 11rem;
+      // height: 11rem;
+      object-fit: cover;
       position: absolute;
       top: 0;
       z-index: -1;

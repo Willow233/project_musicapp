@@ -1,6 +1,9 @@
 <template>
+    <div class="container">
     <MusicListTop :playlist="state.playlist" :creator="state.creator"/>
     <MusicList :itemList="state.itemList" :subscribedCount="state.subscribedCount"/>
+    </div>
+    
 </template>
 
 <script>
@@ -41,3 +44,10 @@ export default{
     }
 }
 </script>
+
+<style lang="less" scoped>
+.container{
+    overflow: hidden;
+}
+    
+</style>

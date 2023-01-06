@@ -2,7 +2,7 @@
     
     <div class="FooterMusic">
         
-        <div class="footerLeft" @click="updateDetailShow">
+        <div class="footerLeft" @click="popupMusicPlayer">
             <img :src="playList[playListIndex].al.picUrl" alt="" />
             <span>{{ playList[playListIndex].name }}</span>
         </div>
@@ -20,6 +20,7 @@
         <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
     </div>
     <MusicListPopup :show-bottom="showBottom" @close-popup="closePopup"/>
+    <MusicPlayer :show-player="showPlayer" @close-player="closePlayer"/>
    
 </template>
 
@@ -27,10 +28,12 @@
 import { useStore } from 'vuex';
 import { computed, ref, onMounted ,watch } from 'vue';
 import MusicListPopup from '@/components/MusicListPopup/index.vue'
+import MusicPlayer from '@/components/MusicPlayer/index.vue'
 
 export default {
     components:{
-        MusicListPopup
+        MusicListPopup,
+        MusicPlayer
     },
     setup() {
         // vuex
@@ -81,10 +84,21 @@ export default {
             showBottom.value = false
             console.log('触发父方法');
         }
+        // 弹出音乐播放界面
+        let showPlayer = ref(false)
+        function popupMusicPlayer(){
+            showPlayer.value = true
+        }
+
+        // 关闭音乐播放界面
+        function closePlayer(){
+            showPlayer.value = false
+        }
         console.log('playlist', playList)
         return {
             // 要return audio 才能获取获取到audio实例对象 不然就是null
-            playList, playListIndex, isbtnShow, play, audio,pause,showBottom,popup,closePopup
+            playList, playListIndex, isbtnShow, play, audio,pause,showBottom,popup,closePopup,
+            showPlayer,popupMusicPlayer,closePlayer
         }
     }
 }
