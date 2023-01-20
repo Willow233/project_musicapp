@@ -1,6 +1,6 @@
 <template>
     <van-popup 
-    class="popup"
+    class="popup-musiclist"
     :show="showBottom" position="bottom"
     @click-overlay="closePopup"
     :style="{height:'65%',width:'90%',marginLeft:'4%',marginBottom:'0.3rem',borderRadius:'0.4rem',overflow:'hidden'}"
@@ -33,9 +33,7 @@
           <div class="itemLeft" @click="playMusic(i)">
             <div>
               <span class="song-name">{{ item.name }}</span>
-              <span v-for="(item1, index) in item.ar" :key="index">&nbsp;-&nbsp;{{
-                item1.name
-              }}</span>
+              <span>&nbsp;-&nbsp;{{ item.ar[0].name }}</span>
             </div>
           </div>
           <div class="itemRight">
@@ -50,7 +48,7 @@
 </template>
 
 <script>
-import store from '@/store';
+  import { useStore } from 'vuex';
 import { computed } from 'vue';
 
 export default {
@@ -66,9 +64,14 @@ export default {
             return store.state.music.playList
         })
 
-    
-       return {
-    closePopup,itemList
+    // 播放歌曲
+    const store = useStore()
+    const playMusic = (i)=>{
+        store.commit('music/updatePlayListIndex',i)
+
+    }
+           return {
+    closePopup,itemList,playMusic
        }
      
     }
@@ -76,7 +79,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
- .popup{
+ .popup-musiclist{
    
     .itemMusicTop {
     width: 100%;
@@ -115,7 +118,7 @@ export default {
       }
     }
     .itemLeft{
-    width: 22%;
+      width: 22%;
       position: absolute;
       left: 0;
       .icon{
@@ -151,22 +154,17 @@ export default {
           height: 100%;
           display: flex;
           align-items: center;
-          .leftSpan {
-            display: inline-block;
-            width: 0.2rem;
-            text-align: center;
-          }
           div {
           .song-name{
             color: #111;
-            font-size: 0.32rem;
+            font-size: 0.28rem;
           }
             span{
               font-weight: 400;
               font-size: .24rem;
               color: #999;
             }
-            margin-left: 0.3rem;
+            margin-left: 0.1rem;
           }
         }
         .itemRight{

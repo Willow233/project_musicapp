@@ -1,53 +1,260 @@
 <template>
-    <van-popup class="popup" closeable close-icon-position="top-left" close-icon="arrow-down" :show="showPlayer"
+    <van-popup class="popup-player" closeable close-icon-position="top-left" close-icon="arrow-down" :show="showPlayer"
         position="bottom" @click-close-icon="closePlayer" :style="{ height: '100%' }">
-        <div class="topNav">
-            <div class="musicInfo">
-                <span>{{ playList[playListIndex].name }}</span>
-                <span>{{playList[playListIndex].ar[0].name}}</span>
-            
-        </div>
-        <div class="share">
-            <svg class="icon liebiao" aria-hidden="true" @click="popup">
-                <use xlink:href="#icon-toggle-right"></use>
+        <img class="bgimg" :src="musicList.al.picUrl" alt="">
+        <div class="player-head">
+            <div class="song-detail">
+                <Vue3Marquee>
+                    <span class="music-name">{{ musicList.al.name }}</span>
+                </Vue3Marquee>
+                <span class="singer-name">{{ musicList.ar[0].name }}</span>
+            </div>
+            <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-arrow-right-bold"></use>
             </svg>
+        </div>
+        <div class="detail-content">
+            <img src="@/assets/needle-ab.png" alt="" class="img_needle" />
+            <img src="@/assets/cd.png" alt="" class="img_cd" />
+            <img :src="musicList.al.picUrl" alt="" class="img_ar" />
+        </div>
 
-        </div>
-        </div>
-        
+        <div class="detailFooter">
+    <div class="footerTop">
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-aixin"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-shangchuan"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-yanchu"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-xiaoxi"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-diandiandianshu"></use>
+      </svg>
+    </div>
+    <div class="footerContent">
+      <input type="range" class="range" min="0" :max="duration" v-model="currentTime" step="0.05">
+    </div>
+    <div class="footer">
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-danquxunhuan"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true" @click="goPlay(-1)">
+        <use xlink:href="#icon-arrow-double-left"></use>
+      </svg>
+      <svg
+        class="icon bofang"
+        aria-hidden="true"
+        v-if="isbtnShow"
+        @click="play"
+      >
+        <use xlink:href="#icon-bofangsanjiaoxing"></use>
+      </svg>
+      <svg class="icon bofang" aria-hidden="true" v-else @click="play">
+        <use xlink:href="#icon-timeout"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true" @click="goPlay(1)">
+        <use xlink:href="#icon-arrow-double-right"></use>
+      </svg>
+      <svg class="icon" aria-hidden="true">
+        <use xlink:href="#icon-toggle-right"></use>
+      </svg>
+    </div>
+  </div>
 
     </van-popup>
 </template>
 
 
 <script>
-import store from '@/store';
-import { computed,reactive} from 'vue';
+import { Vue3Marquee } from 'vue3-marquee'
+import 'vue3-marquee/dist/style.css'
 export default {
-    props: ['showPlayer'],
+    props: ['showPlayer', 'musicList'],
+    components: {
+        Vue3Marquee
+    },
     setup(props, { emit }) {
         // 关闭弹窗
         function closePlayer() {
             emit('close-player')
         }
 
-        
-        // 获取当前歌单及歌曲信息
-        const playList = computed(()=> store.state.music.playList)
-        const playListIndex = computed(() => store.state.music.playListIndex)
 
-        // 获取所有歌手信息
-        const singer = reactive(playList[playListIndex])
-        console.log(singer);
-
-     
+        console.log(props);
 
         return {
-            closePlayer,playList,playListIndex
+            closePlayer
         }
     }
 }
 </script>
-<style>
 
+<style lang="less" scoped>
+.popup-player {
+    .bgimg {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        object-fit: cover;
+        z-index: -1;
+        filter: blur(30px);
+    }
+
+    .player-head {
+        // position: absolute;
+        // left: 3.2rem;
+        height: 1rem;
+        margin-top: 10px;
+
+        .song-detail {
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 30%;
+
+            .music-name {
+                display: inline-block;
+                width: 3rem;
+                text-align: center;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                color: white;
+                font-size: .28rem;
+            }
+
+            .singer-name {
+                display: inline-block;
+                width: 3rem;
+                text-align: center;
+                overflow: hidden;
+                white-space: nowrap;
+                font-size: .24rem;
+                color: #777;
+            }
+        }
+
+        .icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            fill: white;
+        }
+
+    }
+
+    .detail-content {
+        width: 100%;
+        height: 9rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+
+        .img_needle {
+    width: 2rem;
+    height: 3rem;
+    position: absolute;
+    left: 46%;
+    transform-origin: 0 0;
+    transform: rotate(-13deg);
+    transition: all 2s;
+  }
+  .img_needle_active {
+    width: 2rem;
+    height: 3rem;
+    position: absolute;
+    left: 46%;
+    transform-origin: 0 0;
+    transform: rotate(0deg);
+    transition: all 2s;
+  }
+  .img_cd {
+    width: 5rem;
+    height: 5rem;
+    position: absolute;
+    bottom: 2.3rem;
+    z-index: -1;
+  }
+  .img_ar {
+    width: 3.2rem;
+    height: 3.2rem;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 3.14rem;
+    animation: rotate_ar 10s linear infinite;
+  }
+  .img_ar_active {
+    animation-play-state: running;
+  }
+  .img_ar_pauesd {
+    animation-play-state: paused;
+  }
+  @keyframes rotate_ar {
+    0% {
+      transform: rotateZ(0deg);
+    }
+    100% {
+      transform: rotateZ(360deg);
+    }
+  }
+
+    }
+
+    .detailFooter {
+  width: 100%;
+  box-sizing: border-box;
+  height: 3rem;
+  position: absolute;
+  bottom: 0.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  .footerTop {
+    width: 100%;
+    height: 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .icon {
+      width: 0.36rem;
+      height: 0.36rem;
+      fill: rgb(245, 234, 234);
+    }
+    .icon {
+      width: 0.6rem;
+      height: 0.6rem;
+    }
+  }
+  .range {
+    width: 90%;
+    height: 0.06rem;
+    margin-left: 0.4rem;
+  }
+  .footer {
+    width: 100%;
+    height: 1rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .icon {
+      fill: rgb(245, 234, 234);
+    }
+    .bofang {
+      width: 1rem;
+      height: 1rem;
+    }
+  }
+}
+}
 </style>

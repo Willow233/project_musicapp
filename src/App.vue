@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import Musicbar from './layout/components/Musicbar.vue'
+import Musicbar from './components/Musicbar.vue'
 
 export default{
   components:{

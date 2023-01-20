@@ -20,7 +20,7 @@
         <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
     </div>
     <MusicListPopup :show-bottom="showBottom" @close-popup="closePopup"/>
-    <MusicPlayer :show-player="showPlayer" @close-player="closePlayer"/>
+    <MusicPlayer :show-player="showPlayer" @close-player="closePlayer" :musicList="playList[playListIndex]"/>
    
 </template>
 
