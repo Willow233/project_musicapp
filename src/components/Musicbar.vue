@@ -54,26 +54,35 @@ export default {
 
         //获取<audio> ref对象 本质就是创建一个响应式对象 从而获取到audio实例对象
         let audio = ref(null)
-
+        
         onMounted(() => {
             // 此时才能获取到ref对象，因setup执行比mounted早，dom还没生成
-            console.log('audio', audio)
+            // console.log('audio', audio)
             store.dispatch('music/getLyric',playList.value[playListIndex.value].id)
+        
         })
         // 获取歌词
         onUpdated(() => {
             store.dispatch('music/getLyric',playList.value[playListIndex.value].id)
         })
-
+        // 获取时间
+        let timer
+        function updateTime(){
+            timer = setInterval(()=>{
+                store.commit('music/updateCurrentTime',audio.value.currentTime)
+            },1000)
+        }
         //播放
         function play() {
             audio.value.play()
             isbtnShow.value = false
+            updateTime()
         }
         //暂停
         function pause() {
             audio.value.pause()
             isbtnShow.value = true
+            clearInterval(timer)
         }
         // 歌曲变化自动播放
         watch(
