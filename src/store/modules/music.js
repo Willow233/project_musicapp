@@ -1,3 +1,4 @@
+import {getMUsicLyric} from '@/api/dashboard'
 const state = {
     playList: [{
         id: 2009007646,//歌曲id
@@ -8,9 +9,13 @@ const state = {
             pic:109951168171363070,
             picUrl:"https://p1.music.126.net/xmSPwmIPQ6oEieLeDmnDMA==/109951168171363071.jpg",
             pic_str: "109951168171363071"
-        }
+        },
+        ar:[{name:"singer"}]
     }],
-    playListIndex: 0
+    playListIndex: 0,
+    lyricList:{}
+
+
 }
 
 const mutations = {
@@ -19,11 +24,17 @@ const mutations = {
     },
     updatePlayListIndex(state, i) {
         state.playListIndex = i
+    },
+    updateLyricList(state, value) {
+        state.lyricList = value
     }
 }
 
 const actions = {
-
+    getLyric:async function(context,value){
+       let res = await getMUsicLyric(value)
+       context.commit('updateLyricList',res.lrc)
+    }
 }
 
 export default {

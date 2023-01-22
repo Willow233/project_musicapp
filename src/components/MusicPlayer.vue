@@ -13,12 +13,23 @@
                 <use xlink:href="#icon-arrow-right-bold"></use>
             </svg>
         </div>
-        <div class="detail-content">
-            <img src="@/assets/needle-ab.png" alt="" class="img_needle" />
+        <div class="detail-content" v-show="!isLyricShow">
+            <img src="@/assets/needle-ab.png" alt="" class="img_needle" :class="{img_needle_active:!isbtnShow}" />
             <img src="@/assets/cd.png" alt="" class="img_cd" />
-            <img :src="musicList.al.picUrl" alt="" class="img_ar" />
+            <img :src="musicList.al.picUrl" alt="" class="img_ar" :class="!isbtnShow ? 'img_ar_active':'img_ar_pauesd'"/>
         </div>
-
+        <div class="musicLyric" ref="musicLyric" v-show="isLyricShow">
+    <p
+      v-for="item in lyric"
+      :key="item"
+      :class="{
+        active:
+          currentTime * 1000 >= item.time && currentTime * 1000 < item.pre,
+      }"
+    >
+      {{ item.lrc }}
+    </p>
+  </div>
         <div class="detailFooter">
     <div class="footerTop">
       <svg class="icon" aria-hidden="true">
@@ -55,7 +66,7 @@
       >
         <use xlink:href="#icon-bofangsanjiaoxing"></use>
       </svg>
-      <svg class="icon bofang" aria-hidden="true" v-else @click="play">
+      <svg class="icon bofang" aria-hidden="true" v-else @click="pause">
         <use xlink:href="#icon-timeout"></use>
       </svg>
       <svg class="icon" aria-hidden="true" @click="goPlay(1)">
@@ -74,22 +85,37 @@
 <script>
 import { Vue3Marquee } from 'vue3-marquee'
 import 'vue3-marquee/dist/style.css'
+import { ref,computed } from 'vue'
+import { useStore } from 'vuex'
 export default {
-    props: ['showPlayer', 'musicList'],
+    props: ['showPlayer', 'musicList','isbtnShow'],
     components: {
         Vue3Marquee
     },
     setup(props, { emit }) {
+      
+        // 歌词显示
+        const isLyricShow = ref(true)
+        const store = useStore()
+        let lyric = computed(() => {
+            return store.state.music.lyricList
+        })
         // 关闭弹窗
         function closePlayer() {
             emit('close-player')
         }
-
-
         console.log(props);
+        // 播放音乐
+        const play = () =>{
+          emit('play')
+        }
+        // 暂停
+        const pause = () =>{
+          emit('pause')
+        }
 
         return {
-            closePlayer
+            closePlayer,play,pause,isLyricShow,lyric
         }
     }
 }
@@ -167,7 +193,7 @@ export default {
     position: absolute;
     left: 46%;
     transform-origin: 0 0;
-    transform: rotate(-13deg);
+    transform: rotate(-15deg);
     transition: all 2s;
   }
   .img_needle_active {
@@ -191,7 +217,7 @@ export default {
     height: 3.2rem;
     border-radius: 50%;
     position: absolute;
-    bottom: 3.14rem;
+    bottom: 3.16rem;
     animation: rotate_ar 10s linear infinite;
   }
   .img_ar_active {
@@ -211,6 +237,23 @@ export default {
 
     }
 
+    .musicLyric {
+  width: 100%;
+  height: 8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 0.2rem;
+  overflow: scroll;
+  p {
+    color: rgb(190, 181, 181);
+    margin-bottom: 0.3rem;
+  }
+  .active {
+    color: #fff;
+    font-size: 0.5rem;
+  }
+}
     .detailFooter {
   width: 100%;
   box-sizing: border-box;

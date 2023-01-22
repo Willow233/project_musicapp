@@ -20,15 +20,19 @@
         <audio ref="audio" :src="`https://music.163.com/song/media/outer/url?id=${playList[playListIndex].id}.mp3`"></audio>
     </div>
     <MusicListPopup :show-bottom="showBottom" @close-popup="closePopup"/>
-    <MusicPlayer :show-player="showPlayer" @close-player="closePlayer" :musicList="playList[playListIndex]"/>
+    <MusicPlayer :show-player="showPlayer" @close-player="closePlayer" :musicList="playList[playListIndex]" 
+    @play="play"
+    @pause="pause"
+    :isbtnShow ="isbtnShow"
+    />
    
 </template>
 
 <script>
 import { useStore } from 'vuex';
-import { computed, ref, onMounted ,watch } from 'vue';
-import MusicListPopup from '@/components/MusicListPopup/index.vue'
-import MusicPlayer from '@/components/MusicPlayer/index.vue'
+import { computed, ref, onMounted ,watch,onUpdated } from 'vue';
+import MusicListPopup from '@/components/MusicListPopup.vue'
+import MusicPlayer from '@/components/MusicPlayer.vue'
 
 export default {
     components:{
@@ -45,7 +49,7 @@ export default {
         let playListIndex = computed(() => {
             return store.state.music.playListIndex
         })
-
+    
         let isbtnShow = ref(true)
 
         //获取<audio> ref对象 本质就是创建一个响应式对象 从而获取到audio实例对象
@@ -54,8 +58,13 @@ export default {
         onMounted(() => {
             // 此时才能获取到ref对象，因setup执行比mounted早，dom还没生成
             console.log('audio', audio)
-
+            store.dispatch('music/getLyric',playList.value[playListIndex.value].id)
         })
+        // 获取歌词
+        onUpdated(() => {
+            store.dispatch('music/getLyric',playList.value[playListIndex.value].id)
+        })
+
         //播放
         function play() {
             audio.value.play()
@@ -97,7 +106,7 @@ export default {
         console.log('playlist', playList)
         return {
             // 要return audio 才能获取获取到audio实例对象 不然就是null
-            playList, playListIndex, isbtnShow, play, audio,pause,showBottom,popup,closePopup,
+            playList, playListIndex,isbtnShow, play, audio,pause,showBottom,popup,closePopup,
             showPlayer,popupMusicPlayer,closePlayer
         }
     }

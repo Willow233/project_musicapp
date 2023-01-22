@@ -36,4 +36,10 @@ export function getMUsicUrl(id) {
   })
 }
 
+// 获取歌词
+export function getMUsicLyric(id) {
+  return request({
+    url: `/lyric?id=${id}`
+  })
+}
 
