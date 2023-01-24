@@ -13,12 +13,12 @@
         <use xlink:href="#icon-arrow-right-bold"></use>
       </svg>
     </div>
-    <div class="detail-content" v-show="!isLyricShow">
+    <div class="detail-content" v-show="!isLyricShow" @click="isLyricShow = true">
       <img src="@/assets/needle-ab.png" alt="" class="img_needle" :class="{ img_needle_active: !isbtnShow }" />
       <img src="@/assets/cd.png" alt="" class="img_cd" />
       <img :src="musicList.al.picUrl" alt="" class="img_ar" :class="!isbtnShow ? 'img_ar_active' : 'img_ar_pauesd'" />
     </div>
-    <div class="musicLyric" ref="musicLyric" v-show="isLyricShow">
+    <div class="musicLyric" ref="musicLyric" v-show="isLyricShow" @click="isLyricShow = false">
       <p v-for="item in lyric" :key="item" :class="{
         active:
           currentTime * 1000 >= item.time && currentTime * 1000 < item.pre,
@@ -45,7 +45,11 @@
         </svg>
       </div>
       <div class="footerContent">
-        <input type="range" class="range" min="0" :max="duration" v-model="currentTime" step="0.05">
+        <van-slider class="range" readonly v-model="currentTime" bar-height="3px" active-color="#f02727" min="0" :max="duration"  step="0.05">
+          <template #button>
+    <div class="custom-button"></div>
+  </template></van-slider>
+        <!-- <input type="range" class="range" min="0" :max="duration" v-model="currentTime" step="0.05"> -->
       </div>
       <div class="footer">
         <svg class="icon" aria-hidden="true">
@@ -76,17 +80,17 @@
 <script>
 import { Vue3Marquee } from 'vue3-marquee'
 import 'vue3-marquee/dist/style.css'
-import { ref, computed } from 'vue'
+import { ref, computed ,watch,onMounted} from 'vue'
 import { useStore } from 'vuex'
 export default {
-  props: ['showPlayer', 'musicList', 'isbtnShow'],
+  props: ['showPlayer', 'musicList', 'isbtnShow','playListIndex'],
   components: {
     Vue3Marquee
   },
   setup(props, { emit }) {
 
     // 歌词显示
-    const isLyricShow = ref(true)
+    const isLyricShow = ref(false)
     const store = useStore()
     let lyricList = computed(() => {
       return store.state.music.lyricList
@@ -110,7 +114,7 @@ export default {
           }
           // console.log(min,sec,Number(mill),lrc);
           return { min, sec, mill, lrc, time }
-        });
+        })
         arr.forEach((item, i) => {
           if (i === arr.length - 1 || isNaN(arr[i + 1].time)) {
             item.pre = 100000;
@@ -119,17 +123,47 @@ export default {
           }
         });
       }
-      console.log(arr)
+      // console.log(arr)
       return arr
     })
+    
     // 当前时间
     let currentTime= computed(() => {
       return store.state.music.currentTime
     })
+    // 持续时间
+    let duration = computed(() => {
+      return store.state.music.duration
+    })
+// 百分比
+  //  let percent = Number((currentTime.value / duration.value *100).toFixed(2) + '%')
+   
+    // 获取歌词DOM
+    let musicLyric = ref(null)
+  //  监听歌词滚动
+    watch(
+      ()=>currentTime.value,
+      (value,oldValue)=>{
+        let p = document.querySelector('p.active')
+        // console.log('p',p.offsetTop);
+        // console.log('musicLyric.scrollTop',musicLyric.value.scrollTop);
+        if(p.offsetTop>300){
+          musicLyric.value.scrollTop = p.offsetTop - 200
+        }
+      }
+    )
+    // 上一首下一首切换
+    function goPlay(n){
+      store.commit('music/updatePlayListIndex',props.playListIndex + n)
+    }
 
     // 关闭弹窗
     function closePlayer() {
       emit('close-player')
+      setTimeout(()=>{
+        isLyricShow.value = false
+      },1000)
+      
     }
     console.log(props);
     // 播放音乐
@@ -142,7 +176,8 @@ export default {
     }
 
     return {
-      closePlayer, play, pause, isLyricShow, lyricList, lyric,currentTime
+      closePlayer, play, pause, isLyricShow, lyricList, lyric,currentTime,musicLyric,
+      goPlay,duration
     }
   }
 }
@@ -150,6 +185,10 @@ export default {
 
 <style lang="less" scoped>
 .popup-player {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
   .bgimg {
     width: 100%;
     height: 100%;
@@ -274,11 +313,13 @@ export default {
   .musicLyric {
     width: 100%;
     height: 8rem;
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 0.2rem;
     overflow: scroll;
+    // scroll-behavior: smooth;
 
     p {
       color: rgb(190, 181, 181);
@@ -287,7 +328,7 @@ export default {
 
     .active {
       color: #fff;
-      font-size: 0.5rem;
+      font-size: 0.4rem;
     }
   }
 
@@ -324,7 +365,15 @@ export default {
       width: 90%;
       height: 0.06rem;
       margin-left: 0.4rem;
+
+      .custom-button {
+    width: 10px;
+    height: 10px;
+    background-color: #f02727;
+    border-radius: 50%
+  }
     }
+
 
     .footer {
       width: 100%;

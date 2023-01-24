@@ -24,6 +24,7 @@
     @play="play"
     @pause="pause"
     :isbtnShow ="isbtnShow"
+    :playListIndex = "playListIndex"
     />
    
 </template>
@@ -57,12 +58,18 @@ export default {
         
         onMounted(() => {
             // 此时才能获取到ref对象，因setup执行比mounted早，dom还没生成
-            // console.log('audio', audio)
+            console.log('audio', audio)
             store.dispatch('music/getLyric',playList.value[playListIndex.value].id)
-        
+            // 获取歌曲时长
+            audio.value.oncanplay = function(){
+                // console.log('D',audio.value.duration);
+                store.commit('music/updateDuration',audio.value.duration)
+            }
+            
         })
-        // 获取歌词
+        
         onUpdated(() => {
+            // 获取歌词
             store.dispatch('music/getLyric',playList.value[playListIndex.value].id)
         })
         // 获取时间

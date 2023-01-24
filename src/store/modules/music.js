@@ -14,7 +14,8 @@ const state = {
     }],
     playListIndex: 0,
     lyricList:{},
-    currentTime:0
+    currentTime:0,
+    duration:0
 
 
 }
@@ -31,7 +32,9 @@ const mutations = {
     },
     updateCurrentTime(state, value) {
         state.currentTime = value
-        console.log(value)
+    },
+    updateDuration(state, value) {
+        state.duration = value
     }
 }
 
@@ -39,7 +42,7 @@ const actions = {
     getLyric:async function(context,value){
        let res = await getMUsicLyric(value)
        context.commit('updateLyricList',res.lrc)
-       console.log('res.lrc',res.lrc);
+    //    console.log('res.lrc',res.lrc);
     }
 }
 
